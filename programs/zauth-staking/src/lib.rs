@@ -39,7 +39,8 @@ security_txt! {
     contacts: "email:team@zauth.inc",
     policy: "https://zauth.inc/tos",
     preferred_languages: "en",
-    auditors: "zauth"
+    auditors: "zauth",
+    source_code: "https://github.com/zauthofficial/staking"
 }
 
 declare_id!("zauthsTeNbEN69fEmMVm48D2K3cEHJAtf7vnaU2uBeC");
