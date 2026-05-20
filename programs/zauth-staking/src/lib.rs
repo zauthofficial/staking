@@ -479,17 +479,22 @@ pub mod zauth_staking {
             .checked_sub(penalty_amount)
             .ok_or(ErrorCode::MathOverflow)?;
 
-        // Settle pending dividends (early unstake = still in lock, use current DPT, no cap)
+        // Settle pending dividends using epoch-capped DPT (same as other exit paths)
+        let effective_dpt = get_effective_dpt(
+            stake_account.end_epoch, config.current_epoch,
+            config.dividend_per_token, &config.dpt_snapshots,
+            stake_account.last_dividend_per_token,
+        );
         let pending = calculate_pending_dividend(
             stake_account.weighted_amount,
-            config.dividend_per_token,
+            effective_dpt,
             stake_account.last_dividend_per_token,
         )?;
         stake_account.pending_dividends = stake_account
             .pending_dividends
             .checked_add(pending)
             .ok_or(ErrorCode::MathOverflow)?;
-        stake_account.last_dividend_per_token = config.dividend_per_token;
+        stake_account.last_dividend_per_token = effective_dpt;
 
         // Proportional weighted removal
         let weighted_removed = (stake_account.weighted_amount as u128)
