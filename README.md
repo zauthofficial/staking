@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  On-chain staking contract for $ZAUTH. Stake with time-locked positions, earn epoch-capped dividends from protocol revenue.
+  On-chain staking contract for $ZAUTH. Stake with time-locked positions, earn from protocol revenue distributions.
 </p>
 
 ## Program
@@ -26,22 +26,22 @@
 
 ## How It Works
 
-Users stake $ZAUTH tokens with a chosen lock duration (30 days to 1 year). Longer locks earn a higher weight multiplier (1x at 30d, 2x at 365d, linear between). Protocol revenue is distributed as dividends proportional to each staker's weighted share.
+Users stake $ZAUTH tokens with a chosen lock duration (1 day to 1 year). Longer locks earn a higher weight multiplier (1x at 30d, 2x at 365d, linear between). Protocol revenue is distributed proportional to each staker's weighted share.
 
-Distributions are epoch-capped: your stake only earns dividends for the epochs your lock covers. No ghost rewards after expiry.
+Distributions are epoch-capped: your stake only earns for the epochs your lock covers. Locks shorter than one epoch (60 days) do not receive distributions. No ghost rewards after expiry.
 
 ### Staking
 
 - Choose a lock duration between `min_lock` and `max_lock`
 - Minimum stake enforced on first deposit
-- Re-staking settles pending dividends and resets the lock (new lock must be >= remaining)
-- Lock duration determines weight multiplier for dividend share
+- Re-staking settles pending rewards and resets the lock (new lock must be >= remaining)
+- Lock duration determines weight multiplier for distribution share
 
-### Dividends
+### Distributions
 
 - Admin distributes protocol revenue each epoch (60 days)
 - Distribution is proportional to `weighted_amount` across active stakers
-- DPT (dividend-per-token) snapshots stored in a 7-slot ring buffer
+- DPT (distribution-per-token) snapshots stored in a 7-slot ring buffer
 - Stakers must claim within 7 epochs of lock expiry (420 days at 60d epochs)
 
 ### Early Exit
